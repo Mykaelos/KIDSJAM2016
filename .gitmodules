@@ -1,0 +1,3 @@
+[submodule "Assets/MykaelosUnityLibrary"]
+	path = Assets/MykaelosUnityLibrary
+	url = https://github.com/Mykaelos/MykaelosUnityLibrary.git
