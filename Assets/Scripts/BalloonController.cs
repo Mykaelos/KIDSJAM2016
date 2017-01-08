@@ -10,9 +10,6 @@ public class BalloonController : MonoBehaviour {
 
     SpriteRenderer SpriteRenderer;
     Rigidbody2D Rigidbody2D;
-    BoxCollider2D BoxCollider2D;
-    //Canvas Canvas;
-    //Text Text;
 
 
     public void Setup(Vector2 velocity, Rect screenRect) {
@@ -23,7 +20,6 @@ public class BalloonController : MonoBehaviour {
     void Awake() {
         SpriteRenderer = GetComponent<SpriteRenderer>();
         Rigidbody2D = GetComponent<Rigidbody2D>();
-        BoxCollider2D = GetComponent<BoxCollider2D>();
         SpriteRenderer.sortingOrder = Random.Range(1, 32000);
     }
 

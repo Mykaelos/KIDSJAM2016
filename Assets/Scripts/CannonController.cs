@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CannonController : MonoBehaviour {
     InputInterface InputInterface = new InputInterface();
+    InputData InputData;
 
     public GameObject BulletPrefab;
     Transform SpawnBucket;
@@ -16,8 +17,19 @@ public class CannonController : MonoBehaviour {
     bool HeldFire = false;
 
 
-    public void SetInputInterface(InputInterface inputInterface) {
-        InputInterface = inputInterface;
+    public void Setup(InputData inputData) {
+        InputData = inputData;
+
+        if (InputData.InputControllerType == InputControllerType.KeyboardMouse) {
+            InputInterface = new KeyboardMouseInputInterface();
+        }
+        else if (InputData.InputControllerType == InputControllerType.Gamepad) {
+            InputInterface = new GamepadInputInterface(InputData.GamepadNumber);
+        }
+    }
+
+    public int GetPlayerSlot() {
+        return InputData.PlayerSlot;
     }
 
     void Awake() {
@@ -25,8 +37,6 @@ public class CannonController : MonoBehaviour {
         Barrel = transform.Find("Barrel");
         BarrelExit = Barrel.Find("BarrelExit");
         RefireTimer = new Timer();
-
-        InputInterface = new KeyboardMouseInputInterface(); //TODO Remove
     }
 
     void Update() {
