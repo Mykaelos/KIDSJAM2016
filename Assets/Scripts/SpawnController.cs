@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnController : MonoBehaviour {
+    public const string MESSAGE_SET_BALLOONS_PER_SECOND = "MESSAGE_SET_BALLOONS_PER_SECOND";
+
     public float BalloonsPerSecond = 2;
 
     public GameObject BalloonPrefab;
@@ -22,13 +24,25 @@ public class SpawnController : MonoBehaviour {
         // the cannons.
         var screenRect = Camera.main.VisibleWorldRect();
         ScreenRect = new Rect(screenRect.xMin - 2, screenRect.y + 2, screenRect.width + 4, screenRect.height - 2);
+
+        Messenger.On(MESSAGE_SET_BALLOONS_PER_SECOND, SetSpawnRate);
+    }
+
+    void OnDestory() {
+        Messenger.Un(MESSAGE_SET_BALLOONS_PER_SECOND, SetSpawnRate);
     }
 
     void Update() {
-        if (BalloonSpawnTimer.Check(1f / BalloonsPerSecond)) {
+        if (BalloonsPerSecond > 0 && BalloonSpawnTimer.Check(1f / BalloonsPerSecond)) {
             BalloonSpawnTimer.Reset();
 
             SpawnBalloon();
+        }
+    }
+
+    void SetSpawnRate(object[] args = null) {
+        if (args != null && args.Length > 0) {
+            BalloonsPerSecond = (float)args[0];
         }
     }
 

@@ -3,8 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class BalloonController : MonoBehaviour {
-    public const string MESSAGE_POPPED = "MESSAGE_POPPED";
-    public const string MESSAGE_REMOVED = "MESSAGE_REMOVED";
+    public const string MESSAGE_BALLOON_POPPED = "MESSAGE_BALLOON_POPPED";
     public Vector2 BalloonVelocity;
     public GameObject PopPrefab;
 
@@ -42,7 +41,6 @@ public class BalloonController : MonoBehaviour {
         // Check to see if the balloon is now exiting the screen after being inside of it.
         if (HasMadeItInsideScreen && !ScreenRect.Contains(transform.position)) {
             Destroy(gameObject);
-            Messenger.Fire(MESSAGE_REMOVED);
         }
     }
 
@@ -57,6 +55,6 @@ public class BalloonController : MonoBehaviour {
 
         Destroy(gameObject);
 
-        Messenger.Fire(MESSAGE_POPPED);
+        Messenger.Fire(MESSAGE_BALLOON_POPPED);
     }
 }

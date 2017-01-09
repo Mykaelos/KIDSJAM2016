@@ -10,6 +10,8 @@ public class BulletController : MonoBehaviour {
 
     void Awake() {
         Rigidbody = GetComponent<Rigidbody2D>();
+        var sprite = transform.Find("Sprite");
+        sprite.Rotate(Vector3.forward, Random.Range(0f, 360f));
     }
 
     public void Start() {

@@ -67,3 +67,12 @@ public class CannonController : MonoBehaviour {
         bullet.transform.SetParent(SpawnBucket, true);
     }
 }
+
+/* Ideas:
+- Could add a player number or controller name to the cannon to help tell who is who.
+- Could change the color of each cannon, maybe randomly or from a pile of options.
+
+
+
+
+*/
