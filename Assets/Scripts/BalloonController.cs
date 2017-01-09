@@ -45,13 +45,13 @@ public class BalloonController : MonoBehaviour {
     }
 
     public void Pop() {
-        //var popPrefab = GameObject.Instantiate<GameObject>(PopPrefab);
-        //popPrefab.transform.position = transform.position;
+        var popPrefab = GameObject.Instantiate<GameObject>(PopPrefab);
+        popPrefab.transform.position = transform.position;
 
-        //popPrefab.GetComponent<AudioSource>().pitch = Random.Range(0.8f, 1.2f);
+        popPrefab.GetComponent<AudioSource>().pitch = Random.Range(0.6f, 1.0f);
         //popPrefab.GetComponent<ParticleSystem>().startColor = SpriteRenderer.color;
 
-        //Destroy(popPrefab, 1);
+        Destroy(popPrefab, 1);
 
         Destroy(gameObject);
 

@@ -11,6 +11,7 @@ public class CannonController : MonoBehaviour {
 
     Transform Barrel;
     Transform BarrelExit;
+    AudioSource AudioSource;
 
     Timer RefireTimer;
     public float FireRate = 3; //bullets per second
@@ -36,6 +37,7 @@ public class CannonController : MonoBehaviour {
         SpawnBucket = GameObject.Find("SpawnBucket").transform;
         Barrel = transform.Find("Barrel");
         BarrelExit = Barrel.Find("BarrelExit");
+        AudioSource = GetComponent<AudioSource>();
         RefireTimer = new Timer();
     }
 
@@ -65,6 +67,9 @@ public class CannonController : MonoBehaviour {
         var bullet = GameObject.Instantiate(BulletPrefab, BarrelExit.position, Quaternion.identity);
         bullet.transform.Rotate(Barrel.eulerAngles);
         bullet.transform.SetParent(SpawnBucket, true);
+
+        // An ok hack for now. AudioManager needs to be refactored to not use the Resources folder.
+        AudioManager.PlaySound(AudioSource, Random.Range(0.95f, 1.05f), 0.8f);
     }
 }
 
