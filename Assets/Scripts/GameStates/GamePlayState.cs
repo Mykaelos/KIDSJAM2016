@@ -10,7 +10,6 @@ public class GamePlayState : StateMachineState {
     Text ScoreText;
 
     Timer GameTimer;
-    int Score = 0;
     bool EveryoneLeftGame = false;
 
 
@@ -21,6 +20,7 @@ public class GamePlayState : StateMachineState {
         ScoreText = GameObject.Find("Canvas/GamePlayUI/Score").GetComponent<Text>();
 
         GameTimer = new Timer(146);
+        //GameTimer = new Timer(10); //testing
 
         // Not the ideal way to do it, but I don't have time to refactor the StateMachine
         // to use proper inheritance for this game jam.
@@ -57,7 +57,8 @@ public class GamePlayState : StateMachineState {
 
         GameTimer.Reset();
         UpdateClock();
-        Score = 0;
+        GamePlaySceneController.BalloonsPopped = 0;
+        GamePlaySceneController.ShotsFired = 0;
         EveryoneLeftGame = false;
         UpdateScore();
 
@@ -67,6 +68,7 @@ public class GamePlayState : StateMachineState {
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 2f });
 
         Messenger.On(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.On(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.On(InputManager.MESSAGE_EVERYONE_LEFT_GAME, OnEveryoneLeftGame);
     }
 
@@ -75,6 +77,7 @@ public class GamePlayState : StateMachineState {
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
 
         Messenger.Un(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.Un(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.Un(InputManager.MESSAGE_EVERYONE_LEFT_GAME, OnEveryoneLeftGame);
     }
 
@@ -88,11 +91,15 @@ public class GamePlayState : StateMachineState {
     }
 
     void IncrementScore(object[] args = null) {
-        Score++;
+        GamePlaySceneController.BalloonsPopped++;
         UpdateScore();
     }
 
+    void IncrementShots(object[] args = null) {
+        GamePlaySceneController.ShotsFired++;
+    }
+
     void UpdateScore() {
-        ScoreText.text = Score.ToString("N0") + " Popped";
+        ScoreText.text = GamePlaySceneController.BalloonsPopped.ToString("N0") + " Popped";
     }
 }

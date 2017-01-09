@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour {
     public const string MESSAGE_SET_BALLOONS_PER_SECOND = "MESSAGE_SET_BALLOONS_PER_SECOND";
+    public const string MESSAGE_REMOVE_BALLOONS = "MESSAGE_REMOVE_BALLOONS";
 
     public float BalloonsPerSecond = 2;
 
@@ -26,10 +27,12 @@ public class SpawnController : MonoBehaviour {
         ScreenRect = new Rect(screenRect.xMin - 2, screenRect.y + 2, screenRect.width + 4, screenRect.height - 2);
 
         Messenger.On(MESSAGE_SET_BALLOONS_PER_SECOND, SetSpawnRate);
+        Messenger.On(MESSAGE_REMOVE_BALLOONS, RemoveAllBalloons);
     }
 
     void OnDestory() {
         Messenger.Un(MESSAGE_SET_BALLOONS_PER_SECOND, SetSpawnRate);
+        Messenger.Un(MESSAGE_REMOVE_BALLOONS, RemoveAllBalloons);
     }
 
     void Update() {
@@ -60,9 +63,12 @@ public class SpawnController : MonoBehaviour {
         balloon.GetComponent<BalloonController>().Setup(new Vector2(direction, 0), ScreenRect);
     }
 
-    public void RemoveAllBalloons() {
+    public void RemoveAllBalloons(object[] args = null) {
         foreach (Transform child in SpawnBucket) {
-            Destroy(child.gameObject);
+            var balloonController = child.GetComponent<BalloonController>();
+            if (balloonController != null) {
+                balloonController.Pop(false);
+            }
         }
     }
 }

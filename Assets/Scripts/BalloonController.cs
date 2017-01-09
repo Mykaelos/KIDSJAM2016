@@ -44,7 +44,7 @@ public class BalloonController : MonoBehaviour {
         }
     }
 
-    public void Pop() {
+    public void Pop(bool worthPoints = true) {
         var popPrefab = GameObject.Instantiate<GameObject>(PopPrefab);
         popPrefab.transform.position = transform.position;
 
@@ -54,7 +54,8 @@ public class BalloonController : MonoBehaviour {
         Destroy(popPrefab, 1);
 
         Destroy(gameObject);
-
-        Messenger.Fire(MESSAGE_BALLOON_POPPED);
+        if (worthPoints) {
+            Messenger.Fire(MESSAGE_BALLOON_POPPED);
+        }
     }
 }

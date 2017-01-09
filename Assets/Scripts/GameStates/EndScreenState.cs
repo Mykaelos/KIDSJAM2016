@@ -45,8 +45,13 @@ public class EndScreenState : StateMachineState {
         AudioManager.PlayMusic("MenuMusic", true, false);
 
         //Collect all of the data
+        DetailsText.text = string.Format(
+            "Balloons Popped: {0} \nShots Fired: {1}\n\nThanks for playing!", 
+            GamePlaySceneController.BalloonsPopped.ToString("N0"), 
+            GamePlaySceneController.ShotsFired.ToString("N0"));
 
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
+        Messenger.Fire(SpawnController.MESSAGE_REMOVE_BALLOONS);
     }
 
     void EndFn() {

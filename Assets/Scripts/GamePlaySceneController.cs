@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GamePlaySceneController : MonoBehaviour {
+    public static int BalloonsPopped = 0;
+    public static int ShotsFired = 0;
+
 
     void Awake() {
         AudioManager.AddTracks(new Dictionary<string, string> {

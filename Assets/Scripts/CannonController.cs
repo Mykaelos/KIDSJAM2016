@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CannonController : MonoBehaviour {
+    public const string MESSAGE_SHOTS_FIRED = "MESSAGE_SHOTS_FIRED";
+
     InputInterface InputInterface = new InputInterface();
     InputData InputData;
 
@@ -70,6 +72,8 @@ public class CannonController : MonoBehaviour {
 
         // An ok hack for now. AudioManager needs to be refactored to not use the Resources folder.
         AudioManager.PlaySound(AudioSource, Random.Range(0.95f, 1.05f), 0.8f);
+
+        Messenger.Fire(MESSAGE_SHOTS_FIRED);
     }
 }
 
