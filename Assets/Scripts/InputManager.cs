@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour {
+    public const string MESSAGE_EVERYONE_LEFT_GAME = "MESSAGE_EVERYONE_LEFT_GAME";
+
     public GameObject CannonPrefab;
     
     public InputData[] GamepadPlayers = new InputData[4];
@@ -91,6 +93,10 @@ public class InputManager : MonoBehaviour {
         }
 
         MoveCannonsToLocations();
+
+        if (Cannons.Count == 0) { // Everyone has left.
+            Messenger.Fire(MESSAGE_EVERYONE_LEFT_GAME);
+        }
     }
 
     void MoveCannonsToLocations() {

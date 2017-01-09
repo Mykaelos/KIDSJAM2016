@@ -11,6 +11,7 @@ public class GamePlayState : StateMachineState {
 
     Timer GameTimer;
     int Score = 0;
+    bool EveryoneLeftGame = false;
 
 
     public GamePlayState() {
@@ -19,7 +20,7 @@ public class GamePlayState : StateMachineState {
         ClockText = GameObject.Find("Canvas/GamePlayUI/Clock").GetComponent<Text>();
         ScoreText = GameObject.Find("Canvas/GamePlayUI/Score").GetComponent<Text>();
 
-        GameTimer = new Timer(180);
+        GameTimer = new Timer(146);
 
         // Not the ideal way to do it, but I don't have time to refactor the StateMachine
         // to use proper inheritance for this game jam.
@@ -32,6 +33,10 @@ public class GamePlayState : StateMachineState {
     string CheckFn() {
         //check to see if the timer is finished
         //also could check to see if everyone has left the game?
+
+        if (EveryoneLeftGame) {
+            return "TitleScreenState";
+        }
 
         if (GameTimer.Check()) {
             return "EndScreenState";
@@ -53,11 +58,16 @@ public class GamePlayState : StateMachineState {
         GameTimer.Reset();
         UpdateClock();
         Score = 0;
+        EveryoneLeftGame = false;
         UpdateScore();
+
+        AudioManager.MusicVolume = 0.7f; //TODO refactor this to be part of the PlayMusic method.
+        AudioManager.PlayMusic("GamePlayMusic", true, false);
 
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 2f });
 
         Messenger.On(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.On(InputManager.MESSAGE_EVERYONE_LEFT_GAME, OnEveryoneLeftGame);
     }
 
     void EndFn() {
@@ -65,6 +75,11 @@ public class GamePlayState : StateMachineState {
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
 
         Messenger.Un(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.Un(InputManager.MESSAGE_EVERYONE_LEFT_GAME, OnEveryoneLeftGame);
+    }
+
+    void OnEveryoneLeftGame(object[] args = null) {
+        EveryoneLeftGame = true;
     }
 
     void UpdateClock() {

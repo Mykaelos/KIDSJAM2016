@@ -38,6 +38,9 @@ public class TitleScreenState : StateMachineState {
     void StartFn() {
         TitleScreenUIGroup.SetVisible(true);
 
+        AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
+        AudioManager.PlayMusic("MenuMusic", true, false);
+
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0.5f });
     }
 

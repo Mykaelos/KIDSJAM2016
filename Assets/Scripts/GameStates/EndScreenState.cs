@@ -41,6 +41,9 @@ public class EndScreenState : StateMachineState {
     void StartFn() {
         EndScreenUIGroup.SetVisible(true);
 
+        AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
+        AudioManager.PlayMusic("MenuMusic", true, false);
+
         //Collect all of the data
 
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
