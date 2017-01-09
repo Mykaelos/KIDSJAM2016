@@ -65,11 +65,12 @@ public class GamePlayState : StateMachineState {
         AudioManager.MusicVolume = 0.7f; //TODO refactor this to be part of the PlayMusic method.
         AudioManager.PlayMusic("GamePlayMusic", true, false);
 
-        Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 2f });
+        Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 2f * InputManager.Cannons.Count });
 
         Messenger.On(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
         Messenger.On(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.On(InputManager.MESSAGE_EVERYONE_LEFT_GAME, OnEveryoneLeftGame);
+        Messenger.On(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
     }
 
     void EndFn() {
@@ -79,6 +80,11 @@ public class GamePlayState : StateMachineState {
         Messenger.Un(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
         Messenger.Un(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.Un(InputManager.MESSAGE_EVERYONE_LEFT_GAME, OnEveryoneLeftGame);
+        Messenger.Un(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
+    }
+
+    void PlayerCountChanged(object[] args = null) {
+        Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 2f * InputManager.Cannons.Count });
     }
 
     void OnEveryoneLeftGame(object[] args = null) {

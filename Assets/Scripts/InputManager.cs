@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
     public const string MESSAGE_EVERYONE_LEFT_GAME = "MESSAGE_EVERYONE_LEFT_GAME";
+    public const string MESSAGE_PLAYER_COUNT_CHANGED = "MESSAGE_PLAYER_COUNT_CHANGED";
 
     public GameObject CannonPrefab;
     
@@ -13,7 +14,7 @@ public class InputManager : MonoBehaviour {
     public int PlayersCount = 0;
     public GameObject[] PlayerSlots = new GameObject[5];
 
-    List<CannonController> Cannons = new List<CannonController>();
+    public static List<CannonController> Cannons = new List<CannonController>();
 
 
     void Update() {
@@ -77,6 +78,8 @@ public class InputManager : MonoBehaviour {
 
         MoveCannonsToLocations();
 
+        Messenger.Fire(MESSAGE_PLAYER_COUNT_CHANGED, new object[] { Cannons.Count });
+
         return cannon;
     }
 
@@ -93,6 +96,8 @@ public class InputManager : MonoBehaviour {
         }
 
         MoveCannonsToLocations();
+
+        Messenger.Fire(MESSAGE_PLAYER_COUNT_CHANGED, new object[] { Cannons.Count });
 
         if (Cannons.Count == 0) { // Everyone has left.
             Messenger.Fire(MESSAGE_EVERYONE_LEFT_GAME);
