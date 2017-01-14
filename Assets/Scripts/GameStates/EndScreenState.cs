@@ -7,6 +7,8 @@ public class EndScreenState : StateMachineState {
     CanvasGroup EndScreenUIGroup;
     Text DetailsText;
 
+    GameData GameData;
+
     string[] StartButtonNames = new string[] {
         "Start KeyboardMouse",
         "Start Gamepad0",
@@ -16,10 +18,12 @@ public class EndScreenState : StateMachineState {
     };
 
 
-    public EndScreenState() {
+    public EndScreenState(GameData gameData) {
         Name = GetType().Name;
         EndScreenUIGroup = GameObject.Find("Canvas/EndScreenUI").GetComponent<CanvasGroup>();
         DetailsText = GameObject.Find("Canvas/EndScreenUI/Details").GetComponent<Text>();
+
+        GameData = gameData;
 
         // Not the ideal way to do it, but I don't have time to refactor the StateMachine
         // to use proper inheritance for this game jam.
@@ -46,9 +50,9 @@ public class EndScreenState : StateMachineState {
 
         //Collect all of the data
         DetailsText.text = string.Format(
-            "Balloons Popped: {0} \nShots Fired: {1}\n\nThanks for playing!", 
-            GamePlaySceneController.BalloonsPopped.ToString("N0"), 
-            GamePlaySceneController.ShotsFired.ToString("N0"));
+            "Balloons Popped: {0} \nShots Fired: {1}\n\nThanks for playing!",
+            GameData.BalloonsPopped.ToString("N0"),
+            GameData.ShotsFired.ToString("N0"));
 
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
         Messenger.Fire(SpawnController.MESSAGE_REMOVE_BALLOONS);

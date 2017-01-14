@@ -11,16 +11,17 @@ public class GamePlayState : StateMachineState {
 
     Timer GameTimer;
     bool EveryoneLeftGame = false;
+    GameData GameData;
 
 
-    public GamePlayState() {
+    public GamePlayState(GameData gameData) {
         Name = GetType().Name;
         GamePlayUIGroup = GameObject.Find("Canvas/GamePlayUI").GetComponent<CanvasGroup>();
         ClockText = GameObject.Find("Canvas/GamePlayUI/Clock").GetComponent<Text>();
         ScoreText = GameObject.Find("Canvas/GamePlayUI/Score").GetComponent<Text>();
 
         GameTimer = new Timer(146);
-        //GameTimer = new Timer(10); //testing
+        GameData = gameData;
 
         // Not the ideal way to do it, but I don't have time to refactor the StateMachine
         // to use proper inheritance for this game jam.
@@ -50,6 +51,12 @@ public class GamePlayState : StateMachineState {
         //update the balloon's popped score?
 
         UpdateClock();
+
+        if (Application.isEditor) { // For testing in the editor.
+            if (Input.GetKeyDown(KeyCode.S)) { // Hit S to quickly end the level.
+                GameTimer.SetTimeRemaining(0);
+            }
+        }
     }
 
     void StartFn() {
@@ -57,8 +64,7 @@ public class GamePlayState : StateMachineState {
 
         GameTimer.Reset();
         UpdateClock();
-        GamePlaySceneController.BalloonsPopped = 0;
-        GamePlaySceneController.ShotsFired = 0;
+        GameData.Reset();
         EveryoneLeftGame = false;
         UpdateScore();
 
@@ -97,15 +103,15 @@ public class GamePlayState : StateMachineState {
     }
 
     void IncrementScore(object[] args = null) {
-        GamePlaySceneController.BalloonsPopped++;
+        GameData.BalloonsPopped++;
         UpdateScore();
     }
 
     void IncrementShots(object[] args = null) {
-        GamePlaySceneController.ShotsFired++;
+        GameData.ShotsFired++;
     }
 
     void UpdateScore() {
-        ScoreText.text = GamePlaySceneController.BalloonsPopped.ToString("N0") + " Popped";
+        ScoreText.text = GameData.BalloonsPopped.ToString("N0") + " Popped";
     }
 }

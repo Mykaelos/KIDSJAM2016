@@ -1,0 +1,34 @@
+TODOs
+
+- Make GameData and keep it in the gameplayscenecontroller, then pass it to the game states
+- fix difficulty scaling
+- make InputManager.cannons not static
+- Make message count change good enough.
+- balloonController.pop change bool to something else to make points worth it, or change the method, or dup method
+- clean up the end screen
+-- add better credits, maybe a picture of Frank and Da?
+-- explain who made the game (Frankie on design)
+- clean up the everyoneLeftTheGame concept, and fix the odd boolean that i have in gameplaystate
+
+- Add in Frankie's Yay!
+- Clean up timing on everything.
+
+- add easy debug for testing states, and speeding up gameplay
+- properly remove all balloons for each state
+
+- add different balloon sprites
+-- add colors for the pop particles
+
+- add clouds floating by, that loop
+- add a static sun in the background
+
+
+- Refactor music to not have to be in the resources folder.
+-- Maybe have gamePlay hold a list of songs?
+--- maybe have the editor auto collect those songs from a music folder, and save by name
+- refactor music to be played like sounds if needed. and have a volumne and pitch passed in if needed.
+- For CannonController or others, add AudioSource.PlaySound that takes in pitch and volume and stuff, better than using AudioManager.
+
+
+- Add Player number or controller to cannon?
+- Change color of cannon randomly, or something.
