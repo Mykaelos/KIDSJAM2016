@@ -6,6 +6,8 @@ public class SpawnController : MonoBehaviour {
     public const string MESSAGE_SET_BALLOONS_PER_SECOND = "MESSAGE_SET_BALLOONS_PER_SECOND";
     public const string MESSAGE_REMOVE_BALLOONS = "MESSAGE_REMOVE_BALLOONS";
 
+    public BalloonData[] BalloonData = new BalloonData[4];
+
     public float BalloonsPerSecond = 2;
 
     public GameObject BalloonPrefab;
@@ -60,7 +62,7 @@ public class SpawnController : MonoBehaviour {
         balloon.transform.position = location;
         balloon.transform.SetParent(SpawnBucket, true);
 
-        balloon.GetComponent<BalloonController>().Setup(new Vector2(direction, 0), ScreenRect);
+        balloon.GetComponent<BalloonController>().Setup(new Vector2(direction, 0), ScreenRect, BalloonData.RandomElement());
     }
 
     public void RemoveAllBalloons(object[] args = null) {

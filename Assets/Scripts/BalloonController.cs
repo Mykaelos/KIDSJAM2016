@@ -5,14 +5,19 @@ using UnityEngine.UI;
 public class BalloonController : MonoBehaviour {
     public Vector2 BalloonVelocity;
     public GameObject PopPrefab;
+    BalloonData BalloonData;
 
     SpriteRenderer SpriteRenderer;
     Rigidbody2D Rigidbody2D;
 
+    Rect ScreenRect;
+    bool HasMadeItInsideScreen = false;
 
-    public void Setup(Vector2 velocity, Rect screenRect) {
+
+    public void Setup(Vector2 velocity, Rect screenRect, BalloonData balloonData) {
         BalloonVelocity = velocity;
         ScreenRect = screenRect;
+        BalloonData = balloonData;
     }
 
     void Awake() {
@@ -23,14 +28,13 @@ public class BalloonController : MonoBehaviour {
 
     void Start() {
         Rigidbody2D.velocity = BalloonVelocity * Random.Range(0.5f, 1.5f);
+        SpriteRenderer.sprite = BalloonData.Sprite;
+        transform.localScale *= Random.Range(0.7f, 1.4f);
     }
 
     void Update() {
         CheckForRemoval();
     }
-
-    Rect ScreenRect;
-    bool HasMadeItInsideScreen = false;
 
     void CheckForRemoval() {
         // Check to see if the balloon has made it into the screen yet.
@@ -48,10 +52,16 @@ public class BalloonController : MonoBehaviour {
         popPrefab.transform.position = transform.position;
 
         popPrefab.GetComponent<AudioSource>().pitch = Random.Range(0.6f, 1.0f);
-        //popPrefab.GetComponent<ParticleSystem>().startColor = SpriteRenderer.color;
+        var particleSystemMain = popPrefab.GetComponent<ParticleSystem>().main;
+        particleSystemMain.startColor = BalloonData.PopColor;
 
         Destroy(popPrefab, 1);
-
         Destroy(gameObject);
     }
+}
+
+[System.Serializable]
+public class BalloonData {
+    public Sprite Sprite;
+    public Color PopColor;
 }

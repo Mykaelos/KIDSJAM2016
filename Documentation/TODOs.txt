@@ -8,9 +8,6 @@ TODOs New Features
 - Add in Frankie's Yay!
 - Clean up timing on everything.
 
-- add different balloon sprites
--- add colors for the pop particles
-
 - Add Player number or controller to cannon?
 - Change color of cannon randomly, or something.
 
