@@ -1,5 +1,4 @@
 TODOs Fixes
-- Make message count change good enough.
 - clean up the end screen
 -- add better credits, maybe a picture of Frank and Da?
 -- explain who made the game (Frankie on design)
@@ -11,9 +10,6 @@ TODOs New Features
 
 - add different balloon sprites
 -- add colors for the pop particles
-
-- add clouds floating by, that loop
-- add a static sun in the background
 
 - Add Player number or controller to cannon?
 - Change color of cannon randomly, or something.
