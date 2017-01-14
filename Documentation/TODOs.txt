@@ -1,6 +1,5 @@
 TODOs Fixes
 - Make message count change good enough.
-- balloonController.pop change bool to something else to make points worth it, or change the method, or dup method
 - clean up the end screen
 -- add better credits, maybe a picture of Frank and Da?
 -- explain who made the game (Frankie on design)
@@ -9,9 +8,6 @@ TODOs Fixes
 TODOs New Features
 - Add in Frankie's Yay!
 - Clean up timing on everything.
-
-- add easy debug for testing states, and speeding up gameplay
-- properly remove all balloons for each state
 
 - add different balloon sprites
 -- add colors for the pop particles

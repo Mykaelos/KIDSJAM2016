@@ -6,7 +6,7 @@ public class SpawnController : MonoBehaviour {
     public const string MESSAGE_SET_BALLOONS_PER_SECOND = "MESSAGE_SET_BALLOONS_PER_SECOND";
     public const string MESSAGE_REMOVE_BALLOONS = "MESSAGE_REMOVE_BALLOONS";
 
-    public float BaseBalloonsPerSecond = 2;
+    public float BalloonsPerSecond = 2;
 
     public GameObject BalloonPrefab;
 
@@ -36,7 +36,7 @@ public class SpawnController : MonoBehaviour {
     }
 
     void Update() {
-        if (BaseBalloonsPerSecond > 0 && BalloonSpawnTimer.Check(1f / (BaseBalloonsPerSecond))) {
+        if (BalloonsPerSecond > 0 && BalloonSpawnTimer.Check(1f / (BalloonsPerSecond))) {
             BalloonSpawnTimer.Reset();
 
             SpawnBalloon();
@@ -45,11 +45,9 @@ public class SpawnController : MonoBehaviour {
 
     void SetSpawnRate(object[] args = null) {
         if (args != null && args.Length > 0) {
-            BaseBalloonsPerSecond = (float)args[0];
+            BalloonsPerSecond = (float)args[0];
         }
     }
-
-
 
     void SpawnBalloon() {
         var balloon = GameObject.Instantiate<GameObject>(BalloonPrefab);
@@ -69,7 +67,7 @@ public class SpawnController : MonoBehaviour {
         foreach (Transform child in SpawnBucket) {
             var balloonController = child.GetComponent<BalloonController>();
             if (balloonController != null) {
-                balloonController.Pop(false);
+                balloonController.Pop();
             }
         }
     }

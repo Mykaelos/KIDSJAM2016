@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class BalloonController : MonoBehaviour {
-    public const string MESSAGE_BALLOON_POPPED = "MESSAGE_BALLOON_POPPED";
     public Vector2 BalloonVelocity;
     public GameObject PopPrefab;
 
@@ -44,7 +43,7 @@ public class BalloonController : MonoBehaviour {
         }
     }
 
-    public void Pop(bool worthPoints = true) {
+    public void Pop() {
         var popPrefab = GameObject.Instantiate<GameObject>(PopPrefab);
         popPrefab.transform.position = transform.position;
 
@@ -54,8 +53,5 @@ public class BalloonController : MonoBehaviour {
         Destroy(popPrefab, 1);
 
         Destroy(gameObject);
-        if (worthPoints) {
-            Messenger.Fire(MESSAGE_BALLOON_POPPED);
-        }
     }
 }

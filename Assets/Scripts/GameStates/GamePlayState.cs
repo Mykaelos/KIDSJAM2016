@@ -35,9 +35,6 @@ public class GamePlayState : StateMachineState {
     }
 
     public override void UpdateFn() {
-        //update the timer
-        //update the balloon's popped score?
-
         UpdateClock();
 
         if (Application.isEditor) { // For testing in the editor.
@@ -59,7 +56,7 @@ public class GamePlayState : StateMachineState {
         AudioManager.MusicVolume = 0.7f; //TODO refactor this to be part of the PlayMusic method.
         AudioManager.PlayMusic("GamePlayMusic", true, false);
 
-        Messenger.On(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.On(BulletController.MESSAGE_BALLOON_POPPED, IncrementScore);
         Messenger.On(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.On(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
     }
@@ -68,7 +65,7 @@ public class GamePlayState : StateMachineState {
         GamePlayUIGroup.SetVisible(false);
         SetSpawnRate(0);
 
-        Messenger.Un(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.Un(BulletController.MESSAGE_BALLOON_POPPED, IncrementScore);
         Messenger.Un(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.Un(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
     }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletController : MonoBehaviour {
-    public float Speed = 5000;
+    public const string MESSAGE_BALLOON_POPPED = "MESSAGE_BALLOON_POPPED";
+    public float Speed = 10;
     public float Duration = 2;
     Rigidbody2D Rigidbody;
 
@@ -28,6 +29,8 @@ public class BulletController : MonoBehaviour {
         BalloonController balloonController = collision.gameObject.GetComponent<BalloonController>();
         if (balloonController != null) {
             balloonController.Pop();
+            Messenger.Fire(MESSAGE_BALLOON_POPPED);
+
             OnDestroy();
         }
     }
