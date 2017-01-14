@@ -4,45 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EndScreenState : StateMachineState {
+    InputManager InputManager;
+    GameData GameData;
+
     CanvasGroup EndScreenUIGroup;
     Text DetailsText;
 
-    GameData GameData;
 
-    string[] StartButtonNames = new string[] {
-        "Start KeyboardMouse",
-        "Start Gamepad0",
-        "Start Gamepad1",
-        "Start Gamepad2",
-        "Start Gamepad3",
-    };
-
-
-    public EndScreenState(GameData gameData) {
-        Name = GetType().Name;
-        EndScreenUIGroup = GameObject.Find("Canvas/EndScreenUI").GetComponent<CanvasGroup>();
-        DetailsText = GameObject.Find("Canvas/EndScreenUI/Details").GetComponent<Text>();
-
+    public EndScreenState(InputManager inputManager, GameData gameData) {
+        InputManager = inputManager;
         GameData = gameData;
 
-        // Not the ideal way to do it, but I don't have time to refactor the StateMachine
-        // to use proper inheritance for this game jam.
-        Check = CheckFn;
-        Start = StartFn;
-        End = EndFn;
+        EndScreenUIGroup = GameObject.Find("Canvas/EndScreenUI").GetComponent<CanvasGroup>();
+        DetailsText = GameObject.Find("Canvas/EndScreenUI/Details").GetComponent<Text>();
     }
 
-    string CheckFn() {
-        for (int i = 0; i < StartButtonNames.Length; i++) {
-            if (Input.GetButtonDown(StartButtonNames[i])) {
-                return "TitleScreenState";
-            }
+    public override string CheckFn() {
+        if (InputManager.DidAnyonePressStart()) {
+            return ClassNameOf<TitleScreenState>();
         }
 
         return null;
     }
 
-    void StartFn() {
+    public override void StartFn() {
         EndScreenUIGroup.SetVisible(true);
 
         AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
@@ -58,7 +43,7 @@ public class EndScreenState : StateMachineState {
         Messenger.Fire(SpawnController.MESSAGE_REMOVE_BALLOONS);
     }
 
-    void EndFn() {
+    public override void EndFn() {
         EndScreenUIGroup.SetVisible(false);
     }
 }

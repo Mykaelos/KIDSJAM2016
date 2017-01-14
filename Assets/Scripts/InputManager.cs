@@ -3,34 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour {
-    public const string MESSAGE_EVERYONE_LEFT_GAME = "MESSAGE_EVERYONE_LEFT_GAME";
     public const string MESSAGE_PLAYER_COUNT_CHANGED = "MESSAGE_PLAYER_COUNT_CHANGED";
+
+    string[] StartButtonNames = new string[] {
+        "Start KeyboardMouse",
+        "Start Gamepad0",
+        "Start Gamepad1",
+        "Start Gamepad2",
+        "Start Gamepad3",
+    };
 
     public GameObject CannonPrefab;
     
-    public InputData[] GamepadPlayers = new InputData[4];
-    public InputData KeyboardMousePlayers;
+    InputData[] GamepadPlayers = new InputData[4];
+    InputData KeyboardMousePlayers;
 
-    public int PlayersCount = 0;
-    public GameObject[] PlayerSlots = new GameObject[5];
+    GameObject[] PlayerSlots = new GameObject[5];
+    List<CannonController> Cannons = new List<CannonController>();
 
-    public static List<CannonController> Cannons = new List<CannonController>();
+    public int PlayersCount {
+        get { return Cannons.Count; }
+    }
 
+
+    public bool DidAnyonePressStart() {
+        for (int i = 0; i < StartButtonNames.Length; i++) {
+            if (Input.GetButtonDown(StartButtonNames[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     void Update() {
         // Listen for new players wanting to join
         if (PlayersCount < PlayerSlots.Length) {
             for (int i = 0; i < GamepadPlayers.Length; i++) {
-                CheckForGamepadJoin(i);
+                CheckForGamepadJoinOrExit(i);
             }
 
-            CheckForKeyboardMouseJoin();
+            CheckForKeyboardMouseJoinOrExit();
         }
     }
 
-    void CheckForGamepadJoin(int controllerNumber) {
+    void CheckForGamepadJoinOrExit(int controllerNumber) {
         if (GamepadPlayers[controllerNumber] == null && Input.GetButtonDown("Fire1 Gamepad" + controllerNumber.ToString())) {
-            PlayersCount++;
             var slotNumber = GetNextFreePlayerSlot();
 
             GamepadPlayers[controllerNumber] = new InputData {
@@ -49,9 +67,8 @@ public class InputManager : MonoBehaviour {
         }
     }
 
-    void CheckForKeyboardMouseJoin() {
+    void CheckForKeyboardMouseJoinOrExit() {
         if (KeyboardMousePlayers == null && Input.GetButtonDown("Fire1 KeyboardMouse")) {
-            PlayersCount++;
             var slotNumber = GetNextFreePlayerSlot();
 
             KeyboardMousePlayers = new InputData {
@@ -78,7 +95,7 @@ public class InputManager : MonoBehaviour {
 
         MoveCannonsToLocations();
 
-        Messenger.Fire(MESSAGE_PLAYER_COUNT_CHANGED, new object[] { Cannons.Count });
+        Messenger.Fire(MESSAGE_PLAYER_COUNT_CHANGED, new object[] { PlayersCount });
 
         return cannon;
     }
@@ -90,7 +107,6 @@ public class InputManager : MonoBehaviour {
                 Destroy(Cannons[i].gameObject);
                 Cannons.RemoveAt(i);
                 PlayerSlots[data.PlayerSlot] = null;
-                PlayersCount--;
                 break;
             }
         }
@@ -98,10 +114,6 @@ public class InputManager : MonoBehaviour {
         MoveCannonsToLocations();
 
         Messenger.Fire(MESSAGE_PLAYER_COUNT_CHANGED, new object[] { Cannons.Count });
-
-        if (Cannons.Count == 0) { // Everyone has left.
-            Messenger.Fire(MESSAGE_EVERYONE_LEFT_GAME);
-        }
     }
 
     void MoveCannonsToLocations() {

@@ -5,19 +5,23 @@ using UnityEngine;
 public class GamePlaySceneController : MonoBehaviour {
     public GameData GameData = new GameData();
 
+    InputManager InputManager;
 
     void Awake() {
         AudioManager.AddTracks(new Dictionary<string, string> {
             { "MenuMusic", "Ponies_and_Balloons" },
             { "GamePlayMusic", "Racing_The_Clock" }
         });
+
+        InputManager = GetComponent<InputManager>();
+
     }
 
     void Start() {
         StateMachine.Initialize(gameObject, new List<StateMachineState> {
-            new TitleScreenState(),
-            new GamePlayState(GameData),
-            new EndScreenState(GameData)
+            new TitleScreenState(InputManager),
+            new GamePlayState(InputManager, GameData),
+            new EndScreenState(InputManager, GameData)
         });
     }
 }
