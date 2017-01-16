@@ -27,7 +27,7 @@ public class EndScreenState : StateMachineState {
                 EventChain.Stop();
             }
 
-            return ClassNameOf<TitleScreenState>();
+            return ClassNameOf<CreditsScreenState>();
         }
 
         return null;
