@@ -1,18 +1,24 @@
 TODOs Fixes
 - clean up the end screen
--- add better credits, maybe a picture of Frank and Da?
--- explain who made the game (Frankie on design)
+- maybe a picture of Frank and Da?
+** add button text to return to title screen on end screen
+- back nav to credits screen from title screen
+- rename title screen to instructions screen
 
+fix balloon collisions
+
+white clouds
+
+explosion balloon - pink 
+
+end screen hot to
+
+
+- FIX SPAWN WIDTH SO IT ISN'T SO WIDE!
 
 TODOs New Features
-** add button text to return to title screen on end screen
-
-- Added a Credits screen that's shown first, then start screen.
-- can be navigated back to from the start screen somehow...
-
-- Add Player number or controller to cannon?
+- PROBABLY NOT - Add Player number or controller to cannon?
 - Change color of cannon randomly, or something.
-
 
 - WOULD BE AWESOME to shift the difficulty with the music!
 -- make more balloons when it gets more intense and louder, then back off when it gets quieter...
