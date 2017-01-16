@@ -5,19 +5,19 @@ TODOs Fixes
 
 
 TODOs New Features
-- Add in Frankie's Yay!
-- Clean up timing on everything.
+** add button text to return to title screen on end screen
+
+- Added a Credits screen that's shown first, then start screen.
+- can be navigated back to from the start screen somehow...
 
 - Add Player number or controller to cannon?
 - Change color of cannon randomly, or something.
 
 
+- WOULD BE AWESOME to shift the difficulty with the music!
+-- make more balloons when it gets more intense and louder, then back off when it gets quieter...
+
+
 TODO Refactoring
-- Refactor music to not have to be in the resources folder.
--- Maybe have gamePlay hold a list of songs?
---- maybe have the editor auto collect those songs from a music folder, and save by name
 - refactor music to be played like sounds if needed. and have a volumne and pitch passed in if needed.
 - For CannonController or others, add AudioSource.PlaySound that takes in pitch and volume and stuff, better than using AudioManager.
-
-
-

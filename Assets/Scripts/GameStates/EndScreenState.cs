@@ -10,6 +10,8 @@ public class EndScreenState : StateMachineState {
     CanvasGroup EndScreenUIGroup;
     Text DetailsText;
 
+    EventChain EventChain;
+
 
     public EndScreenState(InputManager inputManager, GameData gameData) {
         InputManager = inputManager;
@@ -21,6 +23,10 @@ public class EndScreenState : StateMachineState {
 
     public override string CheckFn() {
         if (InputManager.DidAnyonePressStart()) {
+            if(EventChain != null) {
+                EventChain.Stop();
+            }
+
             return ClassNameOf<TitleScreenState>();
         }
 
@@ -28,10 +34,7 @@ public class EndScreenState : StateMachineState {
     }
 
     public override void StartFn() {
-        EndScreenUIGroup.SetVisible(true);
-
-        AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
-        AudioManager.PlayMusic("MenuMusic", true, false);
+        Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
 
         //Collect all of the data
         DetailsText.text = string.Format(
@@ -39,8 +42,22 @@ public class EndScreenState : StateMachineState {
             GameData.BalloonsPopped.ToString("N0"),
             GameData.ShotsFired.ToString("N0"));
 
-        Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
-        Messenger.Fire(SpawnController.MESSAGE_REMOVE_BALLOONS);
+        EventChain = EventChain.Begin(new List<EventLink> {
+            new CallFunctionLink(delegate(object[] args) {
+                Messenger.Fire(SpawnController.MESSAGE_REMOVE_BALLOONS);
+                AudioManager.StopMusic();
+            }),
+            new WaitLink(2f),
+            new CallFunctionLink(delegate(object[] args) {
+                AudioManager.PlaySound("Yay", 1, 1.5f);
+                EndScreenUIGroup.SetVisible(true);
+            }),
+            new WaitLink(2.5f),
+            new CallFunctionLink(delegate(object[] args) {
+                AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
+                AudioManager.PlayMusic("MenuMusic", true, false);
+            }),
+        });
     }
 
     public override void EndFn() {

@@ -104,7 +104,7 @@ public class GamePlayState : StateMachineState {
         // We definitely want this to scale with the number of players, otherwise the
         // game could potentially be too easy.
 
-        float spawnRate = 2f * InputManager.PlayersCount;
+        float spawnRate = 1f * InputManager.PlayersCount;
 
         SetSpawnRate(spawnRate);
     }

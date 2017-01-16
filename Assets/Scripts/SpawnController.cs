@@ -69,8 +69,16 @@ public class SpawnController : MonoBehaviour {
         foreach (Transform child in SpawnBucket) {
             var balloonController = child.GetComponent<BalloonController>();
             if (balloonController != null) {
-                balloonController.Pop();
+                RemoveBalloonAfterDelay(balloonController);
             }
         }
+    }
+
+    public void RemoveBalloonAfterDelay(BalloonController balloon) {
+        WaitUntil.Seconds(Random.Range(0f, 0.2f), delegate () {
+            if (balloon != null) {
+                balloon.Pop();
+            }
+        });
     }
 }
