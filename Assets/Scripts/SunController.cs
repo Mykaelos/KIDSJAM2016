@@ -9,6 +9,9 @@ public class SunController : MonoBehaviour {
 
     void Awake() {
         RotationTimer = new Timer();
+
+        var screenRect = Camera.main.VisibleWorldRect();
+        transform.position = new Vector3(screenRect.x + screenRect.width - 1, screenRect.y + screenRect.height - 1);
     }
 
     void Update() {

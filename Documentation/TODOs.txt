@@ -13,6 +13,7 @@ explosion balloon - pink
 
 end screen hot to
 
+- Fix sun to move with screen width
 
 - FIX SPAWN WIDTH SO IT ISN'T SO WIDE!
 

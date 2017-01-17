@@ -10,13 +10,13 @@ public class BalloonController : MonoBehaviour {
     SpriteRenderer SpriteRenderer;
     Rigidbody2D Rigidbody2D;
 
-    Rect ScreenRect;
+    Rect BalloonOutOfBoundsRect;
     bool HasMadeItInsideScreen = false;
 
 
-    public void Setup(Vector2 velocity, Rect screenRect, BalloonData balloonData) {
+    public void Setup(Vector2 velocity, Rect balloonOutOfBoundsRect, BalloonData balloonData) {
         BalloonVelocity = velocity;
-        ScreenRect = screenRect;
+        BalloonOutOfBoundsRect = balloonOutOfBoundsRect;
         BalloonData = balloonData;
     }
 
@@ -38,11 +38,11 @@ public class BalloonController : MonoBehaviour {
 
     void CheckForRemoval() {
         // Check to see if the balloon has made it into the screen yet.
-        if (!HasMadeItInsideScreen && ScreenRect.Contains(transform.position)) {
+        if (!HasMadeItInsideScreen && BalloonOutOfBoundsRect.Contains(transform.position)) {
             HasMadeItInsideScreen = true;
         }
         // Check to see if the balloon is now exiting the screen after being inside of it.
-        if (HasMadeItInsideScreen && !ScreenRect.Contains(transform.position)) {
+        if (HasMadeItInsideScreen && !BalloonOutOfBoundsRect.Contains(transform.position)) {
             Destroy(gameObject);
         }
     }
