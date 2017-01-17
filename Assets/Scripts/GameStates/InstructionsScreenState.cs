@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TitleScreenState : StateMachineState {
+public class InstructionsScreenState : StateMachineState {
     InputManager InputManager;
 
-    CanvasGroup TitleScreenUIGroup;
+    CanvasGroup InstructionsScreenUIGroup;
 
 
-    public TitleScreenState(InputManager inputManager) {
+    public InstructionsScreenState(InputManager inputManager) {
         InputManager = inputManager;
 
-        TitleScreenUIGroup = GameObject.Find("Canvas/TitleScreenUI").GetComponent<CanvasGroup>();
+        InstructionsScreenUIGroup = GameObject.Find("Canvas/InstructionsScreenUI").GetComponent<CanvasGroup>();
     }
 
     public override string CheckFn() {
@@ -23,7 +23,7 @@ public class TitleScreenState : StateMachineState {
     }
 
     public override void StartFn() {
-        TitleScreenUIGroup.SetVisible(true);
+        InstructionsScreenUIGroup.SetVisible(true);
 
         AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
         AudioManager.PlayMusic("MenuMusic", true, false);
@@ -32,6 +32,6 @@ public class TitleScreenState : StateMachineState {
     }
 
     public override void EndFn() {
-        TitleScreenUIGroup.SetVisible(false);
+        InstructionsScreenUIGroup.SetVisible(false);
     }
 }

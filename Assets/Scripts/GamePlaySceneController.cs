@@ -20,7 +20,7 @@ public class GamePlaySceneController : MonoBehaviour {
     void Start() {
         StateMachine.Initialize(gameObject, new List<StateMachineState> {
             new CreditsScreenState(InputManager),
-            new TitleScreenState(InputManager),
+            new InstructionsScreenState(InputManager),
             new GamePlayState(InputManager, GameData),
             new EndScreenState(InputManager, GameData)
         });

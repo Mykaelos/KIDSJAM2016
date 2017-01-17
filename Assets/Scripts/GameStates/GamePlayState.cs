@@ -74,7 +74,7 @@ public class GamePlayState : StateMachineState {
         int playersCount = (int)args[0];
 
         if (playersCount == 0) { // Everyone left the game.
-            SwitchState(ClassNameOf<TitleScreenState>());
+            SwitchState(ClassNameOf<InstructionsScreenState>());
             return;
         }
 

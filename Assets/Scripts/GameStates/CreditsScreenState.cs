@@ -16,7 +16,7 @@ public class CreditsScreenState : StateMachineState {
 
     public override string CheckFn() {
         if (InputManager.DidAnyonePressStart()) {
-            return ClassNameOf<TitleScreenState>();
+            return ClassNameOf<InstructionsScreenState>();
         }
 
         return null;

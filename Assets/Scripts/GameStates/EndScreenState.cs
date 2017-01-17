@@ -8,7 +8,7 @@ public class EndScreenState : StateMachineState {
     GameData GameData;
 
     CanvasGroup EndScreenUIGroup;
-    Text DetailsText;
+    Text NumbersText;
 
     EventChain EventChain;
 
@@ -18,7 +18,7 @@ public class EndScreenState : StateMachineState {
         GameData = gameData;
 
         EndScreenUIGroup = GameObject.Find("Canvas/EndScreenUI").GetComponent<CanvasGroup>();
-        DetailsText = GameObject.Find("Canvas/EndScreenUI/Details").GetComponent<Text>();
+        NumbersText = GameObject.Find("Canvas/EndScreenUI/Numbers").GetComponent<Text>();
     }
 
     public override string CheckFn() {
@@ -37,8 +37,8 @@ public class EndScreenState : StateMachineState {
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0f });
 
         //Collect all of the data
-        DetailsText.text = string.Format(
-            "Balloons Popped: {0} \nShots Fired: {1}\n\nThanks for playing!",
+        NumbersText.text = string.Format(
+            "{0}\n{1}",
             GameData.BalloonsPopped.ToString("N0"),
             GameData.ShotsFired.ToString("N0"));
 

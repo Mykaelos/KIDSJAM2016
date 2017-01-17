@@ -1,30 +1,22 @@
 TODOs Fixes
-- clean up the end screen
-- maybe a picture of Frank and Da?
-** add button text to return to title screen on end screen
-- back nav to credits screen from title screen
-- rename title screen to instructions screen
-
 fix balloon collisions
 
-white clouds
+explosion balloon - pink  (one morning)
+- custom balloon (make a new one) and color it
+- can be spawned specifically, and randomly spawns rarely
+- add pops count to end screen
 
-explosion balloon - pink 
-
-end screen hot to
-
-- Fix sun to move with screen width
-
-- FIX SPAWN WIDTH SO IT ISN'T SO WIDE!
+- Add highscore metric?
 
 TODOs New Features
 - PROBABLY NOT - Add Player number or controller to cannon?
 - Change color of cannon randomly, or something.
 
-- WOULD BE AWESOME to shift the difficulty with the music!
+
+- WOULD BE AWESOME to shift the difficulty with the music! (one morning)
 -- make more balloons when it gets more intense and louder, then back off when it gets quieter...
 
 
 TODO Refactoring
-- refactor music to be played like sounds if needed. and have a volumne and pitch passed in if needed.
+- refactor music to be played like sounds if needed. and have a volume and pitch passed in if needed.
 - For CannonController or others, add AudioSource.PlaySound that takes in pitch and volume and stuff, better than using AudioManager.
