@@ -13,6 +13,11 @@ public class GamePlayState : StateMachineState {
     Text ScoreText;
 
     Timer GameTimer;
+    Timer DifficultyIncreaseTimer;
+    float MinDifficulty = 1;
+    float MaxDifficulty = 3;
+    float CurrentDifficultyBase = 1;
+    float DifficultyStep = 0.5f;
 
 
     public GamePlayState(InputManager inputManager, GameData gameData) {
@@ -24,6 +29,7 @@ public class GamePlayState : StateMachineState {
         ScoreText = GameObject.Find("Canvas/GamePlayUI/Score").GetComponent<Text>();
 
         GameTimer = new Timer(146);
+        DifficultyIncreaseTimer = new Timer(GameTimer.Delay / ((MaxDifficulty - MinDifficulty + DifficultyStep) / DifficultyStep));
     }
 
     public override string CheckFn() {
@@ -36,6 +42,7 @@ public class GamePlayState : StateMachineState {
 
     public override void UpdateFn() {
         UpdateClock();
+        UpdateDifficulty();
 
         if (Application.isEditor) { // For testing in the editor.
             if (Input.GetKeyDown(KeyCode.S)) { // Hit S to quickly end the level.
@@ -47,13 +54,14 @@ public class GamePlayState : StateMachineState {
     public override void StartFn() {
         GamePlayUIGroup.SetVisible(true);
 
+        //Reset everything
         GameTimer.Reset();
         UpdateClock();
         GameData.Reset();
         UpdateScore();
-        UpdateDifficulty();
+        CurrentDifficultyBase = MinDifficulty;
+        SetDifficulty();
 
-        AudioManager.MusicVolume = 0.7f; //TODO refactor this to be part of the PlayMusic method.
         AudioManager.PlayMusic("GamePlayMusic", true, false);
 
         Messenger.On(BulletController.MESSAGE_BALLOON_POPPED, IncrementScore);
@@ -78,12 +86,22 @@ public class GamePlayState : StateMachineState {
             return;
         }
 
-        UpdateDifficulty();
+        SetDifficulty();
     }
 
     void UpdateClock() {
         var timeSpan = TimeSpan.FromSeconds(GameTimer.DurationUntilNext());
         ClockText.text = string.Format("{0:D1}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
+    }
+
+    void UpdateDifficulty() {
+        if (DifficultyIncreaseTimer.Check()) {
+            DifficultyIncreaseTimer.Reset();
+
+            CurrentDifficultyBase += DifficultyStep;
+            Debug.Log("CurrentDifficultyBase :" + CurrentDifficultyBase);
+            SetDifficulty();
+        }
     }
 
     void IncrementScore(object[] args = null) {
@@ -99,12 +117,13 @@ public class GamePlayState : StateMachineState {
         ScoreText.text = GameData.BalloonsPopped.ToString("N0") + " Popped";
     }
 
-    void UpdateDifficulty(object[] args = null) {
+    void SetDifficulty(object[] args = null) {
         // We'll determine the difficulty by the number of balloons being spawned. 
         // We definitely want this to scale with the number of players, otherwise the
         // game could potentially be too easy.
 
-        float spawnRate = 1f * Math.Max(InputManager.PlayersCount, 1);
+        float spawnRate = CurrentDifficultyBase * Math.Max(InputManager.PlayersCount, 1);
+        Debug.Log("spawnRate :" + spawnRate);
 
         SetSpawnRate(spawnRate);
     }

@@ -54,8 +54,7 @@ public class EndScreenState : StateMachineState {
             }),
             new WaitLink(2.5f),
             new CallFunctionLink(delegate(object[] args) {
-                AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
-                AudioManager.PlayMusic("MenuMusic", true, false);
+                AudioManager.PlayMusic("MenuMusic", true, false, 0.5f);
             }),
         });
     }

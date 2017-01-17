@@ -25,8 +25,7 @@ public class InstructionsScreenState : StateMachineState {
     public override void StartFn() {
         InstructionsScreenUIGroup.SetVisible(true);
 
-        AudioManager.MusicVolume = 0.3f; //TODO refactor this to be part of the PlayMusic method.
-        AudioManager.PlayMusic("MenuMusic", true, false);
+        AudioManager.PlayMusic("MenuMusic", true, false, 0.5f);
 
         Messenger.Fire(SpawnController.MESSAGE_SET_BALLOONS_PER_SECOND, new object[] { 0.5f });
     }

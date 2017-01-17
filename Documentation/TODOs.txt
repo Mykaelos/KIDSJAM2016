@@ -1,22 +1,20 @@
 TODOs Fixes
-fix balloon collisions
 
-explosion balloon - pink  (one morning)
+
+TODOs New Features
+- PROBABLY NOT - Add Player number or controller to cannon?
+- Change color of cannon randomly, or something.
+
+*explosion balloon - pink  (one morning)
 - custom balloon (make a new one) and color it
 - can be spawned specifically, and randomly spawns rarely
 - add pops count to end screen
 
 - Add highscore metric?
 
-TODOs New Features
-- PROBABLY NOT - Add Player number or controller to cannon?
-- Change color of cannon randomly, or something.
-
-
-- WOULD BE AWESOME to shift the difficulty with the music! (one morning)
--- make more balloons when it gets more intense and louder, then back off when it gets quieter...
-
 
 TODO Refactoring
-- refactor music to be played like sounds if needed. and have a volume and pitch passed in if needed.
-- For CannonController or others, add AudioSource.PlaySound that takes in pitch and volume and stuff, better than using AudioManager.
+
+
+WONT FIX
+- fix balloon collisions - it's more fun to leave this in here.

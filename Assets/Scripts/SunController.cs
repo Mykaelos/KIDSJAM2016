@@ -18,7 +18,7 @@ public class SunController : MonoBehaviour {
         if (RotationTimer.Check(RotationDelay)) {
             RotationTimer.Reset();
 
-            transform.Rotate(Vector3.forward, Random.Range(0f, 360f));
+            transform.Rotate(Vector3.forward, Random.Range(-360f, 360f));
         }
     }
 }
