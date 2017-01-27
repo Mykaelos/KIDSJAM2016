@@ -38,9 +38,10 @@ public class EndScreenState : StateMachineState {
 
         //Collect all of the data
         NumbersText.text = string.Format(
-            "{0}\n{1}",
+            "{0}\n{1}\n{2}",
             GameData.BalloonsPopped.ToString("N0"),
-            GameData.ShotsFired.ToString("N0"));
+            GameData.ShotsFired.ToString("N0"),
+            GameData.ExplosiveBalloonsPopped.ToString("N0"));
 
         EventChain = EventChain.Begin(new List<EventLink> {
             new CallFunctionLink(delegate(object[] args) {
@@ -55,7 +56,7 @@ public class EndScreenState : StateMachineState {
             new WaitLink(2.5f),
             new CallFunctionLink(delegate(object[] args) {
                 AudioManager.PlayMusic("MenuMusic", true, false, 0.5f);
-            }),
+            })
         });
     }
 

@@ -5,16 +5,14 @@ TODOs New Features
 - PROBABLY NOT - Add Player number or controller to cannon?
 - Change color of cannon randomly, or something.
 
-*explosion balloon - pink  (one morning)
-- custom balloon (make a new one) and color it
-- can be spawned specifically, and randomly spawns rarely
-- add pops count to end screen
-
-- Add highscore metric?
-
+message generated based on something
+- teamwork?
+- got all red balloons?
+- something else?
 
 TODO Refactoring
 
 
-WONT FIX
+WONT FIX/DO
 - fix balloon collisions - it's more fun to leave this in here.
+- Add highscore metric? - Does it really matter? This game is about collaboration, not competition.

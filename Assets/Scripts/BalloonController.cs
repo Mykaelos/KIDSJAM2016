@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class BalloonController : MonoBehaviour {
+    public const string MESSAGE_BALLOON_POPPED = "MESSAGE_BALLOON_POPPED";
+    public const string MESSAGE_POP = "MESSAGE_POP";
+    public LocalMessenger LocalMessenger = new LocalMessenger();
     public Vector2 BalloonVelocity;
     public GameObject PopPrefab;
     BalloonData BalloonData;
@@ -12,12 +15,21 @@ public class BalloonController : MonoBehaviour {
 
     Rect BalloonOutOfBoundsRect;
     bool HasMadeItInsideScreen = false;
+    bool IsPopping = false;
 
 
     public void Setup(Vector2 velocity, Rect balloonOutOfBoundsRect, BalloonData balloonData) {
         BalloonVelocity = velocity;
         BalloonOutOfBoundsRect = balloonOutOfBoundsRect;
         BalloonData = balloonData;
+    }
+
+    public void SetBalloonData(BalloonData balloonData) {
+        BalloonData = balloonData;
+
+        if (SpriteRenderer != null) {
+            SpriteRenderer.sprite = BalloonData.Sprite;
+        }
     }
 
     void Awake() {
@@ -48,6 +60,11 @@ public class BalloonController : MonoBehaviour {
     }
 
     public void Pop() {
+        if (IsPopping) {
+            return;
+        }
+        IsPopping = true;
+
         var popPrefab = GameObject.Instantiate<GameObject>(PopPrefab);
         popPrefab.transform.position = transform.position;
 
@@ -57,6 +74,9 @@ public class BalloonController : MonoBehaviour {
 
         Destroy(popPrefab, 1);
         Destroy(gameObject);
+
+        Messenger.Fire(MESSAGE_BALLOON_POPPED);
+        LocalMessenger.Fire(MESSAGE_POP);
     }
 }
 

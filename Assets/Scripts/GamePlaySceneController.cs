@@ -14,7 +14,6 @@ public class GamePlaySceneController : MonoBehaviour {
         });
 
         InputManager = GetComponent<InputManager>();
-
     }
 
     void Start() {
@@ -25,11 +24,18 @@ public class GamePlaySceneController : MonoBehaviour {
             new EndScreenState(InputManager, GameData)
         });
     }
+
+    void Update() {
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.P)) { // For testing purposes =)
+            Messenger.Fire(SpawnController.MESSAGE_SPAWN_EXPLOSIVE_BALLOON);
+        }
+    }
 }
 
 public class GameData {
     public int BalloonsPopped = 0;
     public int ShotsFired = 0;
+    public int ExplosiveBalloonsPopped = 0;
 
 
     public GameData() {
@@ -39,5 +45,6 @@ public class GameData {
     public void Reset() {
         BalloonsPopped = 0;
         ShotsFired = 0;
+        ExplosiveBalloonsPopped = 0;
     }
 }

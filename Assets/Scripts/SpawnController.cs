@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnController : MonoBehaviour {
+    public const string MESSAGE_SPAWN_EXPLOSIVE_BALLOON = "MESSAGE_SPAWN_EXPLOSIVE_BALLOON";
     public const string MESSAGE_SET_BALLOONS_PER_SECOND = "MESSAGE_SET_BALLOONS_PER_SECOND";
     public const string MESSAGE_REMOVE_BALLOONS = "MESSAGE_REMOVE_BALLOONS";
+    public const string MESSAGE_REMOVE_BALLOONS_FROM_POINT = "MESSAGE_REMOVE_BALLOONS_FROM_POINT";
 
     public BalloonData[] BalloonData = new BalloonData[4];
+
+    public BalloonData ExplosiveBalloonData;
 
     public float BalloonsPerSecond = 2;
 
@@ -34,20 +38,30 @@ public class SpawnController : MonoBehaviour {
         // Adjusted the starting y axis so that they don't fly right into the cannons.
         SpawnRect = new Rect(spawnStart, ScreenRect.y + 2, spawnWidth, ScreenRect.height - 3);
 
+        Messenger.On(MESSAGE_SPAWN_EXPLOSIVE_BALLOON, SpawnExplosiveBalloon);
         Messenger.On(MESSAGE_SET_BALLOONS_PER_SECOND, SetSpawnRate);
         Messenger.On(MESSAGE_REMOVE_BALLOONS, RemoveAllBalloons);
+        Messenger.On(MESSAGE_REMOVE_BALLOONS_FROM_POINT, RemoveAllBalloonsFromPoint);
     }
 
     void OnDestory() {
+        Messenger.Un(MESSAGE_SPAWN_EXPLOSIVE_BALLOON, SpawnExplosiveBalloon);
         Messenger.Un(MESSAGE_SET_BALLOONS_PER_SECOND, SetSpawnRate);
         Messenger.Un(MESSAGE_REMOVE_BALLOONS, RemoveAllBalloons);
+        Messenger.Un(MESSAGE_REMOVE_BALLOONS_FROM_POINT, RemoveAllBalloonsFromPoint);
     }
 
     void Update() {
         if (BalloonsPerSecond > 0 && BalloonSpawnTimer.Check(1f / (BalloonsPerSecond))) {
             BalloonSpawnTimer.Reset();
 
-            SpawnBalloon();
+            if (Random.value < 0.01f) {
+                SpawnExplosiveBalloon();
+            }
+            else {
+                SpawnBalloon();
+            }
+
         }
     }
 
@@ -57,7 +71,7 @@ public class SpawnController : MonoBehaviour {
         }
     }
 
-    void SpawnBalloon() {
+    GameObject SpawnBalloon() {
         // I want to equally distribute the balloons to one side or the other. Essentially, I'm splitting the spawnRect 
         // in half and sliding it to the edge of the screen. This way I only have to deal with one rect and not having
         // choose which one.
@@ -72,19 +86,41 @@ public class SpawnController : MonoBehaviour {
         balloon.transform.SetParent(SpawnBucket, true);
 
         balloon.GetComponent<BalloonController>().Setup(new Vector2(direction, 0), BalloonOutOfBoundsRect, BalloonData.RandomElement());
+
+        return balloon;
+    }
+
+    void SpawnExplosiveBalloon(object[] args = null) {
+        var balloon = SpawnBalloon();
+        balloon.AddComponent<ExplosiveBalloonController>();
+        balloon.GetComponent<BalloonController>().SetBalloonData(ExplosiveBalloonData);
     }
 
     public void RemoveAllBalloons(object[] args = null) {
         foreach (Transform child in SpawnBucket) {
             var balloonController = child.GetComponent<BalloonController>();
             if (balloonController != null) {
-                RemoveBalloonAfterDelay(balloonController);
+                RemoveBalloonAfterDelay(balloonController, Random.Range(0f, 0.2f));
             }
         }
     }
 
-    public void RemoveBalloonAfterDelay(BalloonController balloon) {
-        WaitUntil.Seconds(Random.Range(0f, 0.2f), delegate () {
+    public void RemoveAllBalloonsFromPoint(object[] args) {
+        Vector3 startingPoint = (Vector3)args[0];
+
+        foreach (Transform child in SpawnBucket) {
+            var balloonController = child.GetComponent<BalloonController>();
+            if (balloonController != null) {
+                var distance = Vector3.Distance(startingPoint, child.position);
+                var duration = distance * (0.2f / 10f); // ~0.2 seconds per 10 distance units
+
+                RemoveBalloonAfterDelay(balloonController, duration);
+            }
+        }
+    }
+
+    public void RemoveBalloonAfterDelay(BalloonController balloon, float delay) {
+        WaitUntil.Seconds(delay, delegate () {
             if (balloon != null) {
                 balloon.Pop();
             }

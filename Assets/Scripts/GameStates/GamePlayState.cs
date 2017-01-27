@@ -64,7 +64,8 @@ public class GamePlayState : StateMachineState {
 
         AudioManager.PlayMusic("GamePlayMusic", true, false);
 
-        Messenger.On(BulletController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.On(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.On(ExplosiveBalloonController.MESSAGE_EXPLOSIVE_BALLOON_POPPED, IncrementExplosiveBalloonsPopped);
         Messenger.On(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.On(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
     }
@@ -73,7 +74,8 @@ public class GamePlayState : StateMachineState {
         GamePlayUIGroup.SetVisible(false);
         SetSpawnRate(0);
 
-        Messenger.Un(BulletController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.Un(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
+        Messenger.Un(ExplosiveBalloonController.MESSAGE_EXPLOSIVE_BALLOON_POPPED, IncrementExplosiveBalloonsPopped);
         Messenger.Un(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
         Messenger.Un(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
     }
@@ -101,12 +103,18 @@ public class GamePlayState : StateMachineState {
             CurrentDifficultyBase += DifficultyStep;
             Debug.Log("CurrentDifficultyBase :" + CurrentDifficultyBase);
             SetDifficulty();
+
+            Messenger.Fire(SpawnController.MESSAGE_SPAWN_EXPLOSIVE_BALLOON);
         }
     }
 
     void IncrementScore(object[] args = null) {
         GameData.BalloonsPopped++;
         UpdateScore();
+    }
+
+    void IncrementExplosiveBalloonsPopped(object[] args = null) {
+        GameData.ExplosiveBalloonsPopped++;
     }
 
     void IncrementShots(object[] args = null) {
