@@ -20,7 +20,7 @@ public class CannonController : MonoBehaviour {
     bool HeldFire = false;
 
 
-    public void Setup(InputData inputData) {
+    public void Setup(InputData inputData, Sprite barrelSprite, Sprite baseSprite) {
         InputData = inputData;
 
         if (InputData.InputControllerType == InputControllerType.KeyboardMouse) {
@@ -29,6 +29,9 @@ public class CannonController : MonoBehaviour {
         else if (InputData.InputControllerType == InputControllerType.Gamepad) {
             InputInterface = new GamepadInputInterface(InputData.GamepadNumber);
         }
+
+        transform.Find("Barrel/Sprite").GetComponent<SpriteRenderer>().sprite = barrelSprite;
+        transform.Find("Base").GetComponent<SpriteRenderer>().sprite = baseSprite;
     }
 
     public int GetPlayerSlot() {

@@ -5,6 +5,8 @@ TODOs New Features
 - PROBABLY NOT - Add Player number or controller to cannon?
 - Change color of cannon randomly, or something.
 
+Change the red balloons to explode only those within a radius, because the whole screen clears seem to make the game less fun.
+
 message generated based on something
 - teamwork?
 - got all red balloons?

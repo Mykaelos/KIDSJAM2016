@@ -6,6 +6,8 @@ public class GamePlaySceneController : MonoBehaviour {
     public GameData GameData = new GameData();
 
     InputManager InputManager;
+    CannonManager CannonManager;
+
 
     void Awake() {
         AudioManager.AddTracks(new Dictionary<string, string> {
@@ -14,13 +16,14 @@ public class GamePlaySceneController : MonoBehaviour {
         });
 
         InputManager = GetComponent<InputManager>();
+        CannonManager = GetComponent<CannonManager>();
     }
 
     void Start() {
         StateMachine.Initialize(gameObject, new List<StateMachineState> {
             new CreditsScreenState(InputManager),
             new InstructionsScreenState(InputManager),
-            new GamePlayState(InputManager, GameData),
+            new GamePlayState(InputManager, CannonManager, GameData),
             new EndScreenState(InputManager, GameData)
         });
     }

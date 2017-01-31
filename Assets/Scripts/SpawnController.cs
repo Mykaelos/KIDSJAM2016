@@ -8,12 +8,20 @@ public class SpawnController : MonoBehaviour {
     public const string MESSAGE_REMOVE_BALLOONS = "MESSAGE_REMOVE_BALLOONS";
     public const string MESSAGE_REMOVE_BALLOONS_FROM_POINT = "MESSAGE_REMOVE_BALLOONS_FROM_POINT";
 
+
+    [Header("Data")]
     public BalloonData[] BalloonData = new BalloonData[4];
 
+    [Space]
     public BalloonData ExplosiveBalloonData;
 
-    public float BalloonsPerSecond = 2;
+    [Space]
+    [Header("Publics")]
+    [SerializeField]
+    private float BalloonsPerSecond = 2;
 
+    [Space]
+    [Header("Prefabs")]
     public GameObject BalloonPrefab;
 
     Timer BalloonSpawnTimer;

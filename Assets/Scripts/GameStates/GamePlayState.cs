@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GamePlayState : StateMachineState {
     InputManager InputManager;
+    CannonManager CannonManager;
     GameData GameData;
 
     CanvasGroup GamePlayUIGroup;
@@ -20,8 +21,9 @@ public class GamePlayState : StateMachineState {
     float DifficultyStep = 0.5f;
 
 
-    public GamePlayState(InputManager inputManager, GameData gameData) {
+    public GamePlayState(InputManager inputManager, CannonManager cannonManager, GameData gameData) {
         InputManager = inputManager;
+        CannonManager = cannonManager;
         GameData = gameData;
 
         GamePlayUIGroup = GameObject.Find("Canvas/GamePlayUI").GetComponent<CanvasGroup>();
@@ -67,7 +69,7 @@ public class GamePlayState : StateMachineState {
         Messenger.On(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
         Messenger.On(ExplosiveBalloonController.MESSAGE_EXPLOSIVE_BALLOON_POPPED, IncrementExplosiveBalloonsPopped);
         Messenger.On(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
-        Messenger.On(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
+        Messenger.On(CannonManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
     }
 
     public override void EndFn() {
@@ -77,7 +79,7 @@ public class GamePlayState : StateMachineState {
         Messenger.Un(BalloonController.MESSAGE_BALLOON_POPPED, IncrementScore);
         Messenger.Un(ExplosiveBalloonController.MESSAGE_EXPLOSIVE_BALLOON_POPPED, IncrementExplosiveBalloonsPopped);
         Messenger.Un(CannonController.MESSAGE_SHOTS_FIRED, IncrementShots);
-        Messenger.Un(InputManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
+        Messenger.Un(CannonManager.MESSAGE_PLAYER_COUNT_CHANGED, PlayerCountChanged);
     }
 
     void PlayerCountChanged(object[] args = null) {
@@ -130,7 +132,7 @@ public class GamePlayState : StateMachineState {
         // We definitely want this to scale with the number of players, otherwise the
         // game could potentially be too easy.
 
-        float spawnRate = CurrentDifficultyBase * Math.Max(InputManager.PlayersCount, 1);
+        float spawnRate = CurrentDifficultyBase * Math.Max(CannonManager.PlayersCount, 1);
         Debug.Log("spawnRate :" + spawnRate);
 
         SetSpawnRate(spawnRate);
