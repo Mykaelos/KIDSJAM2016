@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CannonController : MonoBehaviour {
     public const string MESSAGE_SHOTS_FIRED = "MESSAGE_SHOTS_FIRED";
@@ -32,6 +33,7 @@ public class CannonController : MonoBehaviour {
 
         transform.Find("Barrel/Sprite").GetComponent<SpriteRenderer>().sprite = barrelSprite;
         transform.Find("Base").GetComponent<SpriteRenderer>().sprite = baseSprite;
+        transform.Find("Base/Canvas/Name").GetComponent<Text>().text = inputData.GetName();
     }
 
     public int GetPlayerSlot() {

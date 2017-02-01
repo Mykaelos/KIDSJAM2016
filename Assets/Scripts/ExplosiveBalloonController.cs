@@ -9,7 +9,7 @@ public class ExplosiveBalloonController : MonoBehaviour {
     void Awake() {
         var balloonController = GetComponent<BalloonController>();
         balloonController.LocalMessenger.On(BalloonController.MESSAGE_POP, delegate(object[] args) {
-            Messenger.Fire(SpawnController.MESSAGE_REMOVE_BALLOONS_FROM_POINT, new object[] { transform.position });
+            Messenger.Fire(SpawnController.MESSAGE_REMOVE_BALLOONS_FROM_POINT, new object[] { transform.position, 5f });
             Messenger.Fire(MESSAGE_EXPLOSIVE_BALLOON_POPPED);
         });
     }

@@ -63,7 +63,7 @@ public class SpawnController : MonoBehaviour {
         if (BalloonsPerSecond > 0 && BalloonSpawnTimer.Check(1f / (BalloonsPerSecond))) {
             BalloonSpawnTimer.Reset();
 
-            if (Random.value < 0.01f) {
+            if (Random.value < 0.05f) {
                 SpawnExplosiveBalloon();
             }
             else {
@@ -115,14 +115,16 @@ public class SpawnController : MonoBehaviour {
 
     public void RemoveAllBalloonsFromPoint(object[] args) {
         Vector3 startingPoint = (Vector3)args[0];
+        float maxDistance = (float)args[1];
 
         foreach (Transform child in SpawnBucket) {
             var balloonController = child.GetComponent<BalloonController>();
             if (balloonController != null) {
                 var distance = Vector3.Distance(startingPoint, child.position);
-                var duration = distance * (0.2f / 10f); // ~0.2 seconds per 10 distance units
-
-                RemoveBalloonAfterDelay(balloonController, duration);
+                if (distance <= maxDistance) {
+                    var duration = distance * (0.2f / 10f); // ~0.2 seconds per 10 distance units
+                    RemoveBalloonAfterDelay(balloonController, duration);
+                }
             }
         }
     }

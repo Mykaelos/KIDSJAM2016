@@ -117,4 +117,8 @@ public class InputData {
     public int PlayerSlot;
     public int GamepadNumber;
     public InputControllerType InputControllerType;
+
+    public string GetName() {
+        return InputControllerType == InputControllerType.KeyboardMouse ? "M" : (GamepadNumber + 1).ToString();
+    }
 }
