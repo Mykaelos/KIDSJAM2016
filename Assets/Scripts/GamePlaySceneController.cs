@@ -29,7 +29,10 @@ public class GamePlaySceneController : MonoBehaviour {
     }
 
     void Update() {
-        if (Application.isEditor && Input.GetKeyDown(KeyCode.P)) { // For testing purposes =)
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.P)) {
+            ScreenShotter.TakeScreenShot();
+        }
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.E)) { // For testing purposes =)
             Messenger.Fire(SpawnController.MESSAGE_SPAWN_EXPLOSIVE_BALLOON);
         }
     }

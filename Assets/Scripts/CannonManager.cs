@@ -8,6 +8,7 @@ public class CannonManager : MonoBehaviour {
     public GameObject CannonPrefab;
     public List<Sprite> CannonBarrelSprites = new List<Sprite>();
     public List<Sprite> CannonBaseSprites = new List<Sprite>();
+    public List<Sprite> CannonBallSprites = new List<Sprite>();
     InputManager InputManager;
     List<CannonController> Cannons = new List<CannonController>();
 
@@ -31,7 +32,7 @@ public class CannonManager : MonoBehaviour {
         // Create the new cannon at its location
         GameObject cannon = GameObject.Instantiate(CannonPrefab, Vector2.zero, Quaternion.identity);
         var cannonController = cannon.GetComponent<CannonController>();
-        cannonController.Setup(inputData, CannonBarrelSprites.RandomElement(), CannonBaseSprites.RandomElement());
+        cannonController.Setup(inputData, CannonBarrelSprites.RandomElement(), CannonBaseSprites.RandomElement(), CannonBallSprites.RandomElement());
         Cannons.Add(cannonController);
 
         MoveCannonsToLocations();

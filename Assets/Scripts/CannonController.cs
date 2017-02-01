@@ -10,6 +10,7 @@ public class CannonController : MonoBehaviour {
     InputData InputData;
 
     public GameObject BulletPrefab;
+    Sprite BallSprite;
     Transform SpawnBucket;
 
     Transform Barrel;
@@ -21,8 +22,9 @@ public class CannonController : MonoBehaviour {
     bool HeldFire = false;
 
 
-    public void Setup(InputData inputData, Sprite barrelSprite, Sprite baseSprite) {
+    public void Setup(InputData inputData, Sprite barrelSprite, Sprite baseSprite, Sprite ballSprite) {
         InputData = inputData;
+        BallSprite = ballSprite;
 
         if (InputData.InputControllerType == InputControllerType.KeyboardMouse) {
             InputInterface = new KeyboardMouseInputInterface();
@@ -74,6 +76,7 @@ public class CannonController : MonoBehaviour {
         var bullet = GameObject.Instantiate(BulletPrefab, BarrelExit.position, Quaternion.identity);
         bullet.transform.Rotate(Barrel.eulerAngles);
         bullet.transform.SetParent(SpawnBucket, true);
+        bullet.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = BallSprite;
 
         // An ok hack for now. AudioManager needs to be refactored to not use the Resources folder.
         AudioManager.PlaySound(AudioSource, Random.Range(0.95f, 1.05f), 0.8f);
